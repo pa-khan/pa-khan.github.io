@@ -1,0 +1,1787 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Олег Киселёв · AI Product Builder &amp; Principal Architect</title>
+  <meta name="description" content="Олег Киселёв: запуск AI и B2B/B2C SaaS продуктов с нуля до выручки за дни вместо кварталов. Product Builder (0→1), Principal AI Architect, Ex-CPTO.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@700;800&family=Onest:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #18191b;
+      --surface: #222427;
+      --surface-2: #2b2e33;
+      --ink: #eff0f1;
+      --muted: #9c9ea3;
+      --accent: #ff4a1f;
+      --accent-ink: #18191b;
+      --field-1: #eff0f1;
+      --field-1-ink: #18191b;
+      --field-1-surface: #e2e4e7;
+      --field-1-muted: #43464d;
+
+      --font-display: 'Unbounded', sans-serif;
+      --font-sans: 'Onest', sans-serif;
+
+      /* Strictly 5 size steps across the entire page */
+      --s-small: 0.875rem;   /* 14px */
+      --s-body: 1.0625rem;   /* 17px */
+      --s-lead: 1.375rem;    /* 22px */
+      --s-head: clamp(1.375rem, 2.2vw, 2.25rem); /* 22px -> 36px */
+      --s-monument: clamp(2.375rem, 9.5vw, 8.5rem);
+
+      --pad-x: 24px;
+      --section-gap: clamp(120px, 12vw, 176px);
+
+      --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+      --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
+      --ease-in-out: cubic-bezier(0.76, 0, 0.24, 1);
+      --ease-soft: cubic-bezier(0.33, 1, 0.68, 1);
+      --t-press: 140ms;
+      --t-hover: 180ms;
+      --t-reveal: 760ms;
+    }
+
+    @media (max-width: 767px) {
+      :root {
+        --pad-x: 16px;
+        --section-gap: 88px;
+        --s-lead: 1.1875rem;
+      }
+    }
+
+    ::selection {
+      background: var(--accent);
+      color: var(--accent-ink);
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: var(--font-sans);
+      font-size: 16px;
+      line-height: 1.5;
+      scroll-behavior: smooth;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-size: var(--s-body);
+      overflow-x: hidden;
+      font-variant-numeric: tabular-nums;
+    }
+
+    img {
+      display: block;
+      max-width: 100%;
+      height: auto;
+      filter: grayscale(100%) contrast(1.08);
+      transition: transform 900ms var(--ease-soft), filter 400ms ease;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+      transition: color var(--t-hover) ease, background-color var(--t-hover) ease, transform var(--t-press) var(--ease-out);
+    }
+
+    button {
+      font-family: inherit;
+      font-size: var(--s-body);
+      cursor: pointer;
+      border: none;
+      background: none;
+      color: inherit;
+      transition: background-color var(--t-hover) ease, color var(--t-hover) ease, transform var(--t-press) var(--ease-out);
+    }
+
+    a:active, button:active {
+      transform: scale(0.98);
+    }
+
+    a:focus-visible, button:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 3px;
+    }
+
+    .safety-bar {
+      width: 100%;
+      height: 8px;
+      background: var(--accent);
+    }
+
+    /* 1. HERO */
+    .hero {
+      padding: 24px var(--pad-x) 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+      background: var(--bg);
+    }
+
+    .hero-top {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 24px;
+      align-items: start;
+    }
+
+    .hero-top-left {
+      max-width: 44ch;
+    }
+
+    .hero-statement {
+      font-size: var(--s-body);
+      line-height: 1.5;
+      color: var(--ink);
+      margin-bottom: 16px;
+    }
+
+    .btn-action {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 46px;
+      padding: 12px 24px;
+      background: var(--accent);
+      color: var(--accent-ink);
+      font-weight: 600;
+      font-size: var(--s-body);
+    }
+
+    .btn-action:hover {
+      background: var(--ink);
+      color: var(--bg);
+    }
+
+    .hero-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 24px;
+      font-size: var(--s-body);
+      color: var(--ink);
+    }
+
+    .hero-nav a:hover {
+      color: var(--accent);
+    }
+
+    .hero-center {
+      width: 100%;
+    }
+
+    .monument-title {
+      font-family: var(--font-display);
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: -0.04em;
+      line-height: 0.88;
+      font-size: var(--s-monument);
+      color: var(--ink);
+      width: 100%;
+      margin-bottom: 16px;
+    }
+
+    .hero-subline {
+      font-size: var(--s-lead);
+      font-weight: 500;
+      color: var(--ink);
+      line-height: 1.35;
+    }
+
+    /* Hero Stage Grid closing the lower screen */
+    .hero-stage {
+      display: grid;
+      grid-template-columns: 7fr 5fr;
+      gap: 16px;
+      align-items: stretch;
+    }
+
+    .hero-photo-frame {
+      height: 300px;
+      overflow: hidden;
+      background: var(--surface);
+      position: relative;
+    }
+
+    .hero-photo-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .hero-metrics-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .hero-stat-tile {
+      background: var(--surface);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .hero-stat-num {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: var(--s-lead);
+      color: var(--ink);
+      letter-spacing: -0.03em;
+    }
+
+    .hero-stat-caption {
+      font-size: var(--s-small);
+      color: var(--ink);
+      line-height: 1.35;
+    }
+
+    .hero-bottom {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 24px;
+      align-items: end;
+      font-size: var(--s-body);
+    }
+
+    .hero-role-line {
+      color: var(--ink);
+      font-weight: 500;
+    }
+
+    .hero-links-bottom {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 24px;
+      color: var(--ink);
+    }
+
+    .hero-links-bottom a {
+      text-decoration: underline;
+      text-underline-offset: 4px;
+    }
+
+    .hero-links-bottom a:hover {
+      color: var(--accent);
+    }
+
+    /* 2. WORK: Giant title, uneven wall (mosaic) */
+    .section-work {
+      padding: var(--section-gap) var(--pad-x) 0;
+      background: var(--bg);
+    }
+
+    .work-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 24px;
+      margin-bottom: 32px;
+      flex-wrap: wrap;
+    }
+
+    .section-modest-title {
+      font-family: var(--font-display);
+      font-weight: 800;
+      text-transform: uppercase;
+      font-size: var(--s-head);
+      line-height: 1.02;
+      letter-spacing: -0.03em;
+      color: inherit;
+    }
+
+    .work-archive-link {
+      font-size: var(--s-body);
+      text-decoration: underline;
+      text-underline-offset: 4px;
+      color: var(--ink);
+    }
+
+    .work-archive-link:hover {
+      color: var(--accent);
+    }
+
+    .mosaic-wall {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .mosaic-row {
+      display: grid;
+      gap: 12px;
+      width: 100%;
+    }
+
+    .mosaic-row.row-a {
+      grid-template-columns: 1.55fr 1fr 1.15fr;
+    }
+
+    .mosaic-row.row-b {
+      grid-template-columns: 1fr 1.75fr 0.95fr;
+    }
+
+    .mosaic-tile {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      background: var(--surface);
+      padding: 16px;
+      transition: opacity 280ms ease, transform 380ms var(--ease-out);
+      cursor: pointer;
+      text-align: left;
+    }
+
+    .mosaic-wall:hover .mosaic-tile:not(:hover) {
+      opacity: 0.72;
+    }
+
+    .mosaic-tile:hover {
+      transform: translateY(-4px);
+    }
+
+    .tile-visual {
+      width: 100%;
+      height: 250px;
+      overflow: hidden;
+      background: var(--bg);
+      position: relative;
+    }
+
+    .mosaic-row.row-b .tile-visual {
+      height: 280px;
+    }
+
+    .tile-visual img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .mosaic-tile:hover .tile-visual img {
+      transform: scale(1.04);
+    }
+
+    .ui-fragment {
+      width: 100%;
+      height: 100%;
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      background: #131416;
+      color: var(--ink);
+      font-size: var(--s-small);
+    }
+
+    .ui-top-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .ui-badge {
+      background: var(--accent);
+      color: var(--accent-ink);
+      font-weight: 600;
+      padding: 4px 10px;
+      font-size: var(--s-small);
+    }
+
+    .ui-stat-huge {
+      font-family: var(--font-display);
+      font-size: var(--s-head);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      color: var(--ink);
+      line-height: 1.05;
+    }
+
+    .ui-sub-line {
+      color: var(--ink);
+      margin-top: 6px;
+      font-size: var(--s-small);
+    }
+
+    .ui-bars {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 6px;
+      align-items: end;
+      height: 64px;
+    }
+
+    .ui-bar {
+      background: var(--surface-2);
+      width: 100%;
+    }
+
+    .ui-bar.hot {
+      background: var(--accent);
+    }
+
+    .tile-caption {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 12px;
+      font-size: var(--s-small);
+      padding-top: 4px;
+    }
+
+    .tile-name {
+      font-weight: 600;
+      color: var(--ink);
+    }
+
+    .tile-meta {
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    /* 3. LIVE INTERACTIVE CASE STAGE */
+    .section-inspector {
+      margin-top: var(--section-gap);
+      padding: 88px var(--pad-x);
+      background: var(--field-1);
+      color: var(--field-1-ink);
+    }
+
+    .inspector-grid {
+      display: grid;
+      grid-template-columns: 5fr 7fr;
+      gap: 40px;
+      align-items: start;
+    }
+
+    .inspector-sticky {
+      position: sticky;
+      top: 32px;
+    }
+
+    .inspector-intro {
+      font-size: var(--s-body);
+      color: var(--field-1-ink);
+      margin: 16px 0 24px;
+      max-width: 46ch;
+    }
+
+    .selector-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .case-switch-btn {
+      width: 100%;
+      text-align: left;
+      padding: 16px 20px;
+      background: var(--field-1-surface);
+      color: var(--field-1-ink);
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 16px;
+      font-size: var(--s-body);
+      font-weight: 500;
+    }
+
+    .case-switch-btn:hover {
+      background: #d2d6dc;
+    }
+
+    .case-switch-btn.active {
+      background: var(--bg);
+      color: var(--ink);
+    }
+
+    .case-switch-metric {
+      font-weight: 600;
+      color: var(--field-1-ink);
+      white-space: nowrap;
+      font-size: var(--s-small);
+    }
+
+    .case-switch-btn.active .case-switch-metric {
+      color: var(--accent);
+    }
+
+    .live-dossier-card {
+      background: var(--bg);
+      color: var(--ink);
+      padding: 36px;
+    }
+
+    .dossier-case-title {
+      font-family: var(--font-display);
+      font-weight: 800;
+      text-transform: uppercase;
+      font-size: var(--s-lead);
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+      margin-bottom: 10px;
+    }
+
+    .dossier-role-line {
+      color: var(--accent);
+      font-weight: 500;
+      font-size: var(--s-body);
+      margin-bottom: 24px;
+    }
+
+    .dossier-metrics-band {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-bottom: 28px;
+    }
+
+    .dossier-metric-cell {
+      background: var(--surface);
+      padding: 16px;
+    }
+
+    .dossier-metric-val {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: var(--s-lead);
+      letter-spacing: -0.03em;
+      color: var(--ink);
+      margin-bottom: 6px;
+    }
+
+    .dossier-metric-lbl {
+      font-size: var(--s-small);
+      color: var(--ink);
+      line-height: 1.35;
+    }
+
+    .dossier-cols {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 28px;
+      margin-bottom: 28px;
+    }
+
+    .dossier-col-title {
+      font-weight: 600;
+      font-size: var(--s-body);
+      color: var(--ink);
+      margin-bottom: 12px;
+    }
+
+    .dossier-points {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .dossier-points li {
+      font-size: var(--s-body);
+      color: var(--ink);
+      line-height: 1.5;
+      padding-left: 16px;
+      position: relative;
+    }
+
+    .dossier-points li::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 10px;
+      width: 6px;
+      height: 6px;
+      background: var(--accent);
+    }
+
+    .dossier-pipeline-bar {
+      background: var(--surface);
+      padding: 16px 20px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .pipe-step {
+      background: var(--bg);
+      color: var(--ink);
+      padding: 6px 12px;
+      font-size: var(--s-small);
+      font-weight: 500;
+    }
+
+    .pipe-sep {
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    /* 4. SHOWCASE: Band of unequal panels (strip) */
+    .section-showcase {
+      padding-top: var(--section-gap);
+      background: var(--bg);
+    }
+
+    .showcase-head-wrap {
+      padding: 0 var(--pad-x);
+      margin-bottom: 36px;
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    .showcase-band {
+      width: 100%;
+      height: 64svh;
+      display: flex;
+      overflow: hidden;
+    }
+
+    .showcase-panel {
+      position: relative;
+      height: 100%;
+      overflow: hidden;
+      transition: flex-grow 500ms var(--ease-in-out);
+    }
+
+    .showcase-panel.p1 { flex: 5 1 0%; }
+    .showcase-panel.p2 { flex: 2 1 0%; }
+    .showcase-panel.p3 { flex: 3 1 0%; }
+    .showcase-panel.p4 { flex: 2 1 0%; }
+
+    .showcase-band:hover .showcase-panel:hover {
+      flex-grow: 6;
+    }
+
+    .showcase-panel img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .panel-scrim {
+      position: absolute;
+      top: 0;
+      left: 0;
+      padding: 24px;
+      background: rgba(24, 25, 27, 0.84);
+      max-width: 360px;
+    }
+
+    .panel-scrim-title {
+      font-size: var(--s-lead);
+      font-weight: 600;
+      line-height: 1.3;
+      color: var(--ink);
+    }
+
+    .showcase-caption {
+      padding: 16px var(--pad-x) 0;
+      font-size: var(--s-body);
+      color: var(--ink);
+      display: flex;
+      justify-content: space-between;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    /* 5. HOW-IT-WORKS: Staircase */
+    .section-steps {
+      padding: var(--section-gap) var(--pad-x) 0;
+      background: var(--bg);
+    }
+
+    .steps-header {
+      margin-bottom: 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      row-gap: 48px;
+    }
+
+    .step-item {
+      grid-column: 1 / -1;
+    }
+
+    .step-item.s1 { grid-column: 1 / 10; }
+    .step-item.s2 { grid-column: 3 / 11; }
+    .step-item.s3 { grid-column: 5 / 13; }
+    .step-item.s4 { grid-column: 6 / 13; }
+
+    .step-clause {
+      font-family: var(--font-display);
+      font-weight: 800;
+      text-transform: uppercase;
+      font-size: var(--s-lead);
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+      color: var(--ink);
+      margin-bottom: 10px;
+    }
+
+    .step-item.s4 .step-clause {
+      color: var(--accent);
+    }
+
+    .step-note {
+      font-size: var(--s-body);
+      color: var(--ink);
+      max-width: 48ch;
+      line-height: 1.5;
+    }
+
+    /* 6. ABOUT: Side facts, wide paragraph */
+    .section-about {
+      padding: var(--section-gap) var(--pad-x) 0;
+      background: var(--bg);
+    }
+
+    .about-heading-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 36px;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    .about-row-one {
+      display: grid;
+      grid-template-columns: 34% 66%;
+      align-items: start;
+      margin-bottom: 72px;
+    }
+
+    .about-facts {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      padding-right: 24px;
+    }
+
+    .fact-pair {
+      font-size: var(--s-small);
+    }
+
+    .fact-label {
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+
+    .fact-val {
+      color: var(--ink);
+      font-weight: 500;
+    }
+
+    .about-statement {
+      font-size: var(--s-lead);
+      line-height: 1.4;
+      color: var(--ink);
+      max-width: 58ch;
+    }
+
+    .about-row-two {
+      display: grid;
+      grid-template-columns: 34% 66%;
+      align-items: start;
+    }
+
+    .record-label {
+      font-size: var(--s-body);
+      color: var(--ink);
+      font-weight: 600;
+    }
+
+    .record-columns {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+    }
+
+    .record-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .record-list li {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      font-size: var(--s-small);
+      background: var(--surface);
+      padding: 14px 16px;
+    }
+
+    .record-name {
+      color: var(--ink);
+      font-weight: 500;
+    }
+
+    .record-year {
+      color: var(--ink);
+      white-space: nowrap;
+    }
+
+    /* 7. CONTACT */
+    .section-contact {
+      padding-top: var(--section-gap);
+      background: var(--bg);
+    }
+
+    .contact-head-wrap {
+      padding: 0 var(--pad-x) 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    .contact-stack {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .contact-row {
+      min-height: 108px;
+      padding: 24px var(--pad-x);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      background: var(--surface);
+      font-family: var(--font-sans);
+      font-size: var(--s-body);
+      line-height: 1.4;
+      color: var(--ink);
+    }
+
+    .contact-row:nth-child(even) {
+      background: var(--bg);
+    }
+
+    .contact-row:hover {
+      color: var(--accent);
+    }
+
+    .contact-row-title {
+      font-family: var(--font-display);
+      font-weight: 700;
+      text-transform: uppercase;
+      font-size: var(--s-lead);
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+      color: inherit;
+    }
+
+    .contact-row-sub {
+      font-family: var(--font-sans);
+      font-size: var(--s-body);
+      font-weight: 400;
+      color: var(--ink);
+    }
+
+    .contact-row.cta-band {
+      background: var(--accent);
+      color: var(--accent-ink);
+      align-items: center;
+    }
+
+    .contact-row.cta-band .contact-row-sub {
+      color: var(--accent-ink);
+    }
+
+    .contact-row.cta-band:hover {
+      background: var(--ink);
+      color: var(--bg);
+    }
+
+    .round-arrow {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: var(--bg);
+      color: var(--ink);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: var(--s-lead);
+      flex-shrink: 0;
+    }
+
+    /* 8. FOOTER */
+    .site-footer {
+      background: var(--field-1);
+      color: var(--field-1-ink);
+      padding: 64px var(--pad-x) 0;
+      display: flex;
+      flex-direction: column;
+      gap: 48px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .footer-top {
+      display: grid;
+      grid-template-columns: 7fr 5fr;
+      gap: 32px;
+      align-items: start;
+    }
+
+    .footer-invite {
+      font-family: var(--font-display);
+      font-weight: 800;
+      text-transform: uppercase;
+      font-size: var(--s-head);
+      line-height: 1.02;
+      letter-spacing: -0.03em;
+      margin-bottom: 24px;
+    }
+
+    .footer-links {
+      justify-self: end;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      font-size: var(--s-body);
+      font-weight: 500;
+    }
+
+    .footer-links a:hover {
+      color: var(--accent);
+    }
+
+    .footer-bottom-wrap {
+      margin-top: 8px;
+    }
+
+    .footer-credits {
+      display: flex;
+      justify-content: space-between;
+      gap: 24px;
+      flex-wrap: wrap;
+      font-size: var(--s-small);
+      color: var(--field-1-ink);
+      margin-bottom: 12px;
+    }
+
+    .footer-monument {
+      font-family: var(--font-display);
+      font-weight: 800;
+      text-transform: uppercase;
+      font-size: var(--s-monument);
+      line-height: 0.82;
+      letter-spacing: -0.05em;
+      white-space: nowrap;
+      color: var(--field-1-ink);
+      transform: translateY(18%);
+      user-select: none;
+    }
+
+    /* Choreographed Reveal Motion Layer */
+    .reveal-item {
+      opacity: 1;
+      transform: translateY(0);
+      transition: transform var(--t-reveal) var(--ease-expo);
+    }
+
+    .js-motion .reveal-item.pending {
+      transform: translateY(18px);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+      .js-motion .reveal-item.pending {
+        transform: none !important;
+      }
+    }
+
+    @media (max-width: 960px) {
+      .hero-stage,
+      .mosaic-row.row-a,
+      .mosaic-row.row-b,
+      .inspector-grid,
+      .dossier-cols,
+      .about-row-one,
+      .about-row-two,
+      .record-columns,
+      .footer-top {
+        grid-template-columns: 1fr;
+      }
+      .inspector-sticky {
+        position: static;
+      }
+      .dossier-metrics-band {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .showcase-band {
+        display: grid;
+        grid-template-columns: 64fr 36fr;
+        grid-template-rows: 1fr 1fr;
+        height: 68svh;
+      }
+      .step-item.s1,
+      .step-item.s2,
+      .step-item.s3,
+      .step-item.s4 {
+        grid-column: 1 / -1;
+      }
+      .step-item.s2 { padding-left: 4vw; }
+      .step-item.s3 { padding-left: 8vw; }
+      .step-item.s4 { padding-left: 12vw; }
+      .footer-links {
+        justify-self: start;
+      }
+    }
+
+    .hero-sub-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    @media (max-width: 600px) {
+      .hero-top,
+      .hero-bottom,
+      .hero-metrics-grid {
+        grid-template-columns: 1fr;
+      }
+      .live-dossier-card {
+        padding: 24px 16px;
+      }
+      .contact-row {
+        min-height: 88px;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: center;
+        gap: 8px;
+      }
+      .contact-row-title {
+        font-size: var(--s-body);
+      }
+      .contact-row.cta-band {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="safety-bar" aria-hidden="true"></div>
+
+  <!-- 1. HERO -->
+  <header class="hero">
+    <div class="hero-top">
+      <div class="hero-top-left reveal-item">
+        <p class="hero-statement">
+          Запускаю AI и SaaS-продукты с нуля до выручки за дни вместо кварталов. Продукт, архитектура и юнит-экономика в одних руках.
+        </p>
+      </div>
+
+      <nav class="hero-nav reveal-item" aria-label="Основная навигация">
+        <a href="#work">Продукты</a>
+        <a href="#inspector">Разбор кейсов</a>
+        <a href="#process">Процесс 0→1</a>
+        <a href="#about">Опыт</a>
+        <a href="#contact">Контакты</a>
+      </nav>
+    </div>
+
+    <div class="hero-center">
+      <h1 class="monument-title reveal-item" id="hero-monument">ОЛЕГ КИСЕЛЁВ</h1>
+      <div class="hero-sub-bar reveal-item">
+        <p class="hero-subline">
+          AI Product Builder (0→1) · Principal AI Architect · Ex-CPTO (команда 17 человек)
+        </p>
+        <a class="btn-action" href="https://t.me/e5asher" target="_blank" rel="noopener">Написать в Telegram</a>
+      </div>
+    </div>
+
+    <div class="hero-stage">
+      <div class="hero-photo-frame reveal-item">
+        <img src="../assets/arch-942.jpg" alt="Инженерная архитектура и запуск AI-продуктов" width="1200" height="750">
+      </div>
+      <div class="hero-metrics-grid reveal-item">
+        <div class="hero-stat-tile">
+          <div class="hero-stat-num">$28,000 MRR</div>
+          <div class="hero-stat-caption">AI B2C &amp; TMA с нуля за 4 мес · ROMI 185% · LTV/CAC 3.4</div>
+        </div>
+        <div class="hero-stat-tile">
+          <div class="hero-stat-num">45+ B2B</div>
+          <div class="hero-stat-caption">Платящих компаний в RAG-автопилоте · Чек 42к ₽ · NDR 118%</div>
+        </div>
+        <div class="hero-stat-tile">
+          <div class="hero-stat-num">144 млн ₽</div>
+          <div class="hero-stat-caption">Найдено расхождений в 1С → ClickHouse · NL→SQL Копилот</div>
+        </div>
+        <div class="hero-stat-tile">
+          <div class="hero-stat-num">14% → 29%</div>
+          <div class="hero-stat-caption">Рост Retention D30 и +38% ARPU на платформе 1.2M+ MAU</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-bottom">
+      <p class="hero-role-line reveal-item">
+        Сборка рабочих MVP за 2–4 дня · Claude Code · Cursor · vLLM · Qdrant · Rust · Python · ClickHouse
+      </p>
+      <div class="hero-links-bottom reveal-item">
+        <a href="https://t.me/e5asher" target="_blank" rel="noopener">Telegram @e5asher</a>
+        <a href="tel:+79601008113">+7 960 100-81-13</a>
+        <a href="mailto:mr@pa-khan.com">mr@pa-khan.com</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- 2. WORK: Giant title, uneven wall (mosaic) -->
+    <section class="section-work" id="work">
+      <div class="work-header">
+        <h2 class="section-modest-title reveal-item">ПРОДУКТЫ В ПРОДЕ</h2>
+        <a class="work-archive-link reveal-item" href="#inspector">Открыть интерактивный разбор метрик ↓</a>
+      </div>
+
+      <div class="mosaic-wall">
+        <div class="mosaic-row row-a">
+          <button type="button" class="mosaic-tile reveal-item" onclick="activateCase(0)">
+            <div class="tile-visual" data-ui>
+              <div class="ui-fragment">
+                <div class="ui-top-row">
+                  <span>B2C AI App &amp; Telegram Mini App</span>
+                  <span class="ui-badge">ROMI 185%</span>
+                </div>
+                <div>
+                  <div class="ui-stat-huge">$28,000 MRR</div>
+                  <div class="ui-sub-line">CR 6.8% в первую оплату · LTV/CAC 3.4 · 40+ A/B пейволлов</div>
+                </div>
+                <div class="ui-bars" aria-hidden="true">
+                  <div class="ui-bar" style="height: 28%;"></div>
+                  <div class="ui-bar" style="height: 42%;"></div>
+                  <div class="ui-bar" style="height: 55%;"></div>
+                  <div class="ui-bar" style="height: 68%;"></div>
+                  <div class="ui-bar" style="height: 84%;"></div>
+                  <div class="ui-bar hot" style="height: 100%;"></div>
+                </div>
+              </div>
+            </div>
+            <div class="tile-caption">
+              <span class="tile-name">Мультимодальное AI-приложение и TMA (Stars / TON / Fiat)</span>
+              <span class="tile-meta">2025 · 0→1 Launch</span>
+            </div>
+          </button>
+
+          <button type="button" class="mosaic-tile reveal-item" onclick="activateCase(1)">
+            <div class="tile-visual">
+              <img src="../assets/arch-942.jpg" alt="Архитектурная геометрия: B2B RAG-автопилот" width="800" height="500">
+            </div>
+            <div class="tile-caption">
+              <span class="tile-name">On-Prem RAG-автопилот поддержки (45+ B2B-клиентов)</span>
+              <span class="tile-meta">NDR 118% · Чек 42к ₽</span>
+            </div>
+          </button>
+
+          <button type="button" class="mosaic-tile reveal-item" onclick="activateCase(2)">
+            <div class="tile-visual" data-ui>
+              <div class="ui-fragment">
+                <div class="ui-top-row">
+                  <span>1С → ClickHouse · NL→SQL Agent</span>
+                  <span class="ui-badge">Точность 1 ₽</span>
+                </div>
+                <div>
+                  <div class="ui-stat-huge">144 млн ₽</div>
+                  <div class="ui-sub-line">Найдено выпавших проводок при сверке 33 млн записей</div>
+                </div>
+                <div class="ui-bars" aria-hidden="true">
+                  <div class="ui-bar" style="height: 45%;"></div>
+                  <div class="ui-bar hot" style="height: 95%;"></div>
+                  <div class="ui-bar" style="height: 60%;"></div>
+                  <div class="ui-bar" style="height: 75%;"></div>
+                  <div class="ui-bar hot" style="height: 100%;"></div>
+                  <div class="ui-bar" style="height: 88%;"></div>
+                </div>
+              </div>
+            </div>
+            <div class="tile-caption">
+              <span class="tile-name">FinTech AI-Copilot и сверка бухоборотов (vLLM)</span>
+              <span class="tile-meta">+14% маржа юнита</span>
+            </div>
+          </button>
+        </div>
+
+        <div class="mosaic-row row-b">
+          <button type="button" class="mosaic-tile reveal-item" onclick="activateCase(3)">
+            <div class="tile-visual">
+              <img src="../assets/arch-618.jpg" alt="Стальная сетка: мультиагентная платформа на 421 инструмент MCP" width="800" height="500">
+            </div>
+            <div class="tile-caption">
+              <span class="tile-name">Корпоративная MCP-платформа (421 инструмент)</span>
+              <span class="tile-meta">-58% OPEX</span>
+            </div>
+          </button>
+
+          <button type="button" class="mosaic-tile reveal-item" onclick="activateCase(4)">
+            <div class="tile-visual" data-ui>
+              <div class="ui-fragment">
+                <div class="ui-top-row">
+                  <span>TripleA · Highload Platform (Go / ClickHouse / K8s)</span>
+                  <span class="ui-badge">1.2M+ MAU</span>
+                </div>
+                <div>
+                  <div class="ui-stat-huge">Retention 14% → 29%</div>
+                  <div class="ui-sub-line">Рост ARPU +38% · Департамент 17 человек · Релизы быстрее в 2.8x</div>
+                </div>
+                <div class="ui-bars" aria-hidden="true">
+                  <div class="ui-bar" style="height: 35%;"></div>
+                  <div class="ui-bar" style="height: 48%;"></div>
+                  <div class="ui-bar" style="height: 62%;"></div>
+                  <div class="ui-bar" style="height: 79%;"></div>
+                  <div class="ui-bar" style="height: 91%;"></div>
+                  <div class="ui-bar hot" style="height: 100%;"></div>
+                </div>
+              </div>
+            </div>
+            <div class="tile-caption">
+              <span class="tile-name">TripleA: Роль CPTO / Head of Product &amp; Tech</span>
+              <span class="tile-meta">Команда 17 чел.</span>
+            </div>
+          </button>
+
+          <button type="button" class="mosaic-tile reveal-item" onclick="activateCase(5)">
+            <div class="tile-visual">
+              <img src="../assets/arch-693.jpg" alt="Мост: B2B Sales AI-Agent для сегмента HoReCa" width="800" height="500">
+            </div>
+            <div class="tile-caption">
+              <span class="tile-name">Vision AI-агент пресейла для HoReCa</span>
+              <span class="tile-meta">CR 1.8% → 7.4%</span>
+            </div>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. INTERACTIVE CASE WORKBENCH -->
+    <section class="section-inspector" id="inspector">
+      <div class="inspector-grid">
+        <div class="inspector-sticky">
+          <h2 class="section-modest-title reveal-item">РАЗБОР КЕЙСОВ</h2>
+          <p class="inspector-intro reveal-item">
+            Выберите любой из шести запущенных продуктов, чтобы изучить юнит-экономику, продуктовые решения и архитектуру.
+          </p>
+          <div class="selector-stack reveal-item" role="tablist" aria-label="Выбор кейса">
+            <button type="button" class="case-switch-btn active" onclick="renderCase(0)" id="switch-0">
+              <span>AI B2C App &amp; Telegram Mini App</span>
+              <span class="case-switch-metric">$28k MRR</span>
+            </button>
+            <button type="button" class="case-switch-btn" onclick="renderCase(1)" id="switch-1">
+              <span>On-Prem RAG-автопилот саппорта</span>
+              <span class="case-switch-metric">45+ B2B · NDR 118%</span>
+            </button>
+            <button type="button" class="case-switch-btn" onclick="renderCase(2)" id="switch-2">
+              <span>FinTech AI-Copilot (1С → ClickHouse)</span>
+              <span class="case-switch-metric">144 млн ₽ сверка</span>
+            </button>
+            <button type="button" class="case-switch-btn" onclick="renderCase(3)" id="switch-3">
+              <span>Мультиагентная платформа (MCP)</span>
+              <span class="case-switch-metric">421 инструмент</span>
+            </button>
+            <button type="button" class="case-switch-btn" onclick="renderCase(4)" id="switch-4">
+              <span>TripleA: Масштабирование 1.2M+ MAU</span>
+              <span class="case-switch-metric">Retention 29%</span>
+            </button>
+            <button type="button" class="case-switch-btn" onclick="renderCase(5)" id="switch-5">
+              <span>B2B Sales Vision-Agent (HoReCa)</span>
+              <span class="case-switch-metric">CR 1.8% → 7.4%</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="live-dossier-card reveal-item" id="dossier-mount" aria-live="polite">
+          <h3 class="dossier-case-title">AI B2C &amp; TMA ПРОДУКТ</h3>
+          <p class="dossier-role-line">Роль: AI Product Builder (0 → 1 → Scale) · Полный цикл от гипотезы до P&amp;L</p>
+          <div class="dossier-metrics-band">
+            <div class="dossier-metric-cell">
+              <div class="dossier-metric-val">$28,000</div>
+              <div class="dossier-metric-lbl">MRR (~2,7 млн ₽/мес) на 4-й месяц</div>
+            </div>
+            <div class="dossier-metric-cell">
+              <div class="dossier-metric-val">6.8%</div>
+              <div class="dossier-metric-lbl">Конверсия в первую оплату (Paywall CR)</div>
+            </div>
+            <div class="dossier-metric-cell">
+              <div class="dossier-metric-val">3.4x</div>
+              <div class="dossier-metric-lbl">Отношение LTV / CAC на платном трафике</div>
+            </div>
+            <div class="dossier-metric-cell">
+              <div class="dossier-metric-val">185%</div>
+              <div class="dossier-metric-lbl">Подтверждённый ROMI рекламных связок</div>
+            </div>
+          </div>
+          <div class="dossier-cols">
+            <div>
+              <div class="dossier-col-title">Продуктовые решения и монетизация</div>
+              <ul class="dossier-points">
+                <li>За 72 часа самостоятельно собрал рабочую версию продукта через Claude Code, Cursor и TypeScript без ожидания команды разработки.</li>
+                <li>Выстроил воронку Web2Web и Telegram Mini App с мгновенным aha-моментом до показа пейволла.</li>
+                <li>Провёл 40+ A/B-экспериментов на ценах, триалах и триггерных пуш-цепочках возврата.</li>
+                <li>Подключил триканальный биллинг: банковские карты, Telegram Stars и крипто-эквайринг TON с on-chain проверкой.</li>
+              </ul>
+            </div>
+            <div>
+              <div class="dossier-col-title">Инженерная реализация и стек</div>
+              <ul class="dossier-points">
+                <li>Асинхронный мультимодальный пайплайн распознавания фото с потоковой отдачей по WebSocket быстрее 1.8 секунды.</li>
+                <li>Сквозная когортная аналитика источников трафика и расчёт юнит-экономики в реальном времени на SQL.</li>
+                <li>Автоматическое переключение между LLM-провайдерами (OpenAI, Anthropic, Gemini) с удержанием аптайма 99.95%.</li>
+              </ul>
+            </div>
+          </div>
+          <div class="dossier-pipeline-bar">
+            <span class="pipe-step">Web2Web Квиз</span>
+            <span class="pipe-sep">→</span>
+            <span class="pipe-step">Telegram Mini App</span>
+            <span class="pipe-sep">→</span>
+            <span class="pipe-step">AI Vision Stream</span>
+            <span class="pipe-sep">→</span>
+            <span class="pipe-step">A/B Paywall</span>
+            <span class="pipe-sep">→</span>
+            <span class="pipe-step">Stars / TON / Fiat</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. SHOWCASE: Band of unequal panels -->
+    <section class="section-showcase">
+      <div class="showcase-head-wrap">
+        <h2 class="section-modest-title reveal-item">ИНЖЕНЕРНЫЙ ФУНДАМЕНТ</h2>
+      </div>
+
+      <div class="showcase-band reveal-item">
+        <div class="showcase-panel p1">
+          <img src="../assets/arch-942.jpg" alt="Высоконагруженная архитектура и строгая изоляция данных" width="1200" height="800">
+          <div class="panel-scrim">
+            <p class="panel-scrim-title">Zero-Trust мультиагентные контуры и 421 инструмент MCP в продакшне</p>
+          </div>
+        </div>
+        <div class="showcase-panel p2">
+          <img src="../assets/arch-618.jpg" alt="Инженерная сетка микросервисов Go, Rust и ClickHouse" width="800" height="800">
+        </div>
+        <div class="showcase-panel p3">
+          <img src="../assets/arch-954.jpg" alt="Чистая структура продуктовых воронок 0→1" width="900" height="800">
+        </div>
+        <div class="showcase-panel p4">
+          <img src="../assets/arch-693.jpg" alt="Мост между продуктовой гипотезой и масштабируемой выручкой" width="800" height="800">
+        </div>
+      </div>
+
+      <div class="showcase-caption">
+        <span>От быстрого вайб-кодинга прототипов за 48 часов до промышленных кластеров под 10M MAU</span>
+        <span>Rust · Python · Go · TypeScript · ClickHouse · Qdrant · vLLM</span>
+      </div>
+    </section>
+
+    <!-- 5. HOW-IT-WORKS: Staircase -->
+    <section class="section-steps" id="process">
+      <div class="steps-header">
+        <h2 class="section-modest-title reveal-item">ЦИКЛ ЗАПУСКА 0→1</h2>
+      </div>
+
+      <div class="steps-grid">
+        <div class="step-item s1 reveal-item">
+          <p class="step-clause">День 1: Юнит-экономика и CustDev</p>
+          <p class="step-note">Провожу проблемные интервью по JTBD, нахожу узкое горлышко в деньгах и собираю финансовую модель юнита до первой строчки кода.</p>
+        </div>
+
+        <div class="step-item s2 reveal-item">
+          <p class="step-clause">День 2: Рабочий прототип в коде</p>
+          <p class="step-note">Вместо многонедельных ТЗ для разработки сам в Claude Code, Cursor и v0 поднимаю кликабельный продукт с реальным фронтендом и логикой.</p>
+        </div>
+
+        <div class="step-item s3 reveal-item">
+          <p class="step-clause">Дни 3–4: AI-агенты, БД и эквайринг</p>
+          <p class="step-note">Разворачиваю бэкенд, LLM/RAG-пайплайны, интеграции с API партнёров, платёжные шлюзы и сквозную продуктовую аналитику.</p>
+        </div>
+
+        <div class="step-item s4 reveal-item">
+          <p class="step-clause">День 5: Трафик и первые продажи</p>
+          <p class="step-note">Тестируем офферы и пейволлы на живых пользователях, считаем LTV/CAC и масштабируем только те связки, которые приносят прибыль.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. ABOUT -->
+    <section class="section-about" id="about">
+      <div class="about-heading-row">
+        <h2 class="section-modest-title reveal-item">ОПЫТ И МАСШТАБ</h2>
+      </div>
+
+      <div class="about-row-one">
+        <div class="about-facts reveal-item">
+          <div class="fact-pair">
+            <div class="fact-label">Совокупный стаж в IT</div>
+            <div class="fact-val">12+ лет (7+ лет в Product &amp; Lead)</div>
+          </div>
+          <div class="fact-pair">
+            <div class="fact-label">Управленческий масштаб</div>
+            <div class="fact-val">Ex-CPTO · департамент 17 специалистов</div>
+          </div>
+          <div class="fact-pair">
+            <div class="fact-label">Формат и оформление</div>
+            <div class="fact-val">Remote · ГПХ · ИП · СЗ · Штат</div>
+          </div>
+        </div>
+
+        <p class="about-statement reveal-item">
+          Я закрываю разрыв между бизнесом и сложной инженерией. Как продакт-билдер нахожу рыночную возможность, считаю P&amp;L и довожу продукт до повторяемых продаж; как системный архитектор лично проектирую отказоустойчивые AI-пайплайны, базы данных и микросервисы, которые выдерживают миллионную аудиторию.
+        </p>
+      </div>
+
+      <div class="about-row-two">
+        <div class="record-label reveal-item">Карьера и стек</div>
+
+        <div class="record-columns">
+          <ul class="record-list reveal-item">
+            <li>
+              <span class="record-name">BlitzAI Venture Studio · Senior PM / AI Builder</span>
+              <span class="record-year">2025 – наст.</span>
+            </li>
+            <li>
+              <span class="record-name">TripleA (1.2M+ MAU) · Head of Product / CPTO</span>
+              <span class="record-year">2023 – 2024</span>
+            </li>
+            <li>
+              <span class="record-name">Грум Айти (3 500+ B2B) · Product Owner CRM</span>
+              <span class="record-year">2021 – 2023</span>
+            </li>
+            <li>
+              <span class="record-name">7 Деталей (1.8 млрд ₽) · Product Manager</span>
+              <span class="record-year">2019 – 2021</span>
+            </li>
+            <li>
+              <span class="record-name">ВГУ · Прикладная математика и информатика</span>
+              <span class="record-year">Выпуск 2020</span>
+            </li>
+          </ul>
+
+          <ul class="record-list reveal-item">
+            <li>
+              <span class="record-name">CustDev · JTBD · Unit-экономика · P&amp;L · A/B</span>
+              <span class="record-year">Product</span>
+            </li>
+            <li>
+              <span class="record-name">Claude Code · Cursor · Codex · v0 · Lovable</span>
+              <span class="record-year">AI Builder</span>
+            </li>
+            <li>
+              <span class="record-name">vLLM · Qdrant RAG · LangChain · MCP (421 tool)</span>
+              <span class="record-year">Enterprise AI</span>
+            </li>
+            <li>
+              <span class="record-name">Rust · Python · Go · TypeScript · Vue 3 / Next</span>
+              <span class="record-year">Engineering</span>
+            </li>
+            <li>
+              <span class="record-name">ClickHouse · PostgreSQL RLS · NATS · K8s</span>
+              <span class="record-year">Highload Data</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. CONTACT -->
+    <section class="section-contact" id="contact">
+      <div class="contact-head-wrap">
+        <h2 class="section-modest-title reveal-item">ПРЯМАЯ СВЯЗЬ</h2>
+      </div>
+
+      <div class="contact-stack">
+        <a class="contact-row reveal-item" href="https://t.me/e5asher" target="_blank" rel="noopener">
+          <span class="contact-row-title">TELEGRAM @E5ASHER</span>
+          <span class="contact-row-sub">Ответ в течение 5 минут · основной канал</span>
+        </a>
+        <a class="contact-row reveal-item" href="tel:+79601008113">
+          <span class="contact-row-title">+7 960 100-81-13</span>
+          <span class="contact-row-sub">Прямой телефон и мессенджеры</span>
+        </a>
+        <a class="contact-row reveal-item" href="mailto:mr@pa-khan.com">
+          <span class="contact-row-title">MR@PA-KHAN.COM</span>
+          <span class="contact-row-sub">Для офферов, ТЗ и материалов</span>
+        </a>
+        <a class="contact-row reveal-item" href="https://voronezh.hh.ru/resume/8337b892ff115b06170039ed1f6a6c43463530" target="_blank" rel="noopener">
+          <span class="contact-row-title">РЕЗЮМЕ PRODUCT (HH)</span>
+          <span class="contact-row-sub">Senior Product Manager / AI Product Builder (0→1)</span>
+        </a>
+        <a class="contact-row reveal-item" href="https://voronezh.hh.ru/resume/dd81bf82ff0ee64a950039ed1f4a4e576c3637" target="_blank" rel="noopener">
+          <span class="contact-row-title">РЕЗЮМЕ ARCHITECT (HH)</span>
+          <span class="contact-row-sub">Senior AI Engineer / Tech Lead (LLM, RAG, Python, Rust)</span>
+        </a>
+        <a class="contact-row cta-band reveal-item" href="https://t.me/e5asher?text=%D0%9F%D1%80%D0%B8%D0%B2%D0%B5%D1%82%2C%20%D0%9E%D0%BB%D0%B5%D0%B3!%20%D0%9F%D0%BE%D1%81%D0%BC%D0%BE%D1%82%D1%80%D0%B5%D0%BB%D0%B8%20%D1%82%D0%B2%D0%BE%D1%91%20%D0%BF%D0%BE%D1%80%D1%82%D1%84%D0%BE%D0%BB%D0%B8%D0%BE%2C%20%D0%B4%D0%B0%D0%B2%D0%B0%D0%B9%20%D1%81%D0%BE%D0%B7%D0%B2%D0%BE%D0%BD%D0%B8%D0%BC%D1%81%D1%8F." target="_blank" rel="noopener">
+          <span class="contact-row-title">НАЗНАЧИТЬ СОЗВОН</span>
+          <span class="round-arrow" aria-hidden="true">→</span>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <!-- 8. FOOTER -->
+  <footer class="site-footer">
+    <div class="footer-top">
+      <div class="reveal-item">
+        <h2 class="footer-invite">ОБСУДИМ ВАШ ПРОДУКТ</h2>
+        <a class="btn-action" href="https://t.me/e5asher" target="_blank" rel="noopener">Написать в Telegram @e5asher</a>
+      </div>
+
+      <div class="footer-links reveal-item">
+        <a href="https://t.me/e5asher" target="_blank" rel="noopener">Telegram: @e5asher</a>
+        <a href="mailto:mr@pa-khan.com">Почта: mr@pa-khan.com</a>
+        <a href="tel:+79601008113">Телефон: +7 960 100-81-13</a>
+        <a href="https://github.com/pa-khan" target="_blank" rel="noopener">GitHub: @pa-khan</a>
+      </div>
+    </div>
+
+    <div class="footer-bottom-wrap">
+      <div class="footer-credits">
+        <span>© 2026 Олег Киселёв · Москва / Воронеж / Remote Worldwide</span>
+        <span>Фото: Carl Nenzen Loven, Mika Ruusunen, Todd Quackenbush, Rob Bye (Unsplash)</span>
+      </div>
+      <div class="footer-monument" aria-hidden="true">КИСЕЛЁВ</div>
+    </div>
+  </footer>
+
+  <script>
+    const cases = [
+      {
+        title: "AI B2C & TMA ПРОДУКТ",
+        role: "Роль: AI Product Builder (0 → 1 → Scale) · Полный цикл от гипотезы до P&L",
+        metrics: [
+          { val: "$28,000", lbl: "MRR (~2,7 млн ₽/мес) на 4-й месяц" },
+          { val: "6.8%", lbl: "Конверсия в первую оплату (Paywall CR)" },
+          { val: "3.4x", lbl: "Отношение LTV / CAC на платном трафике" },
+          { val: "185%", lbl: "Подтверждённый ROMI рекламных связок" }
+        ],
+        product: [
+          "За 72 часа самостоятельно собрал рабочую версию продукта через Claude Code, Cursor и TypeScript без ожидания команды разработки.",
+          "Выстроил воронку Web2Web и Telegram Mini App с мгновенным aha-моментом до показа пейволла.",
+          "Провёл 40+ A/B-экспериментов на ценах, триалах и триггерных пуш-цепочках возврата.",
+          "Подключил триканальный биллинг: банковские карты, Telegram Stars и крипто-эквайринг TON с on-chain проверкой."
+        ],
+        tech: [
+          "Асинхронный мультимодальный пайплайн распознавания фото с потоковой отдачей по WebSocket быстрее 1.8 секунды.",
+          "Сквозная когортная аналитика источников трафика и расчёт юнит-экономики в реальном времени на SQL.",
+          "Автоматическое переключение между LLM-провайдерами (OpenAI, Anthropic, Gemini) с удержанием аптайма 99.95%."
+        ],
+        pipe: ["Web2Web Квиз", "Telegram Mini App", "AI Vision Stream", "A/B Paywall", "Stars / TON / Fiat"]
+      },
+      {
+        title: "ON-PREM RAG АВТОПИЛОТ",
+        role: "Роль: Product Owner & Lead AI Architect · B2B SaaS",
+        metrics: [
+          { val: "45+", lbl: "Платящих B2B-компаний со средним чеком 42 000 ₽/мес" },
+          { val: "118%", lbl: "Net Dollar Retention за счёт расширения тарифов" },
+          { val: "-64%", lbl: "Снижение ФОТ первой линии клиентской поддержки" },
+          { val: "78%", lbl: "Доля обращений, закрываемых ИИ автономно" }
+        ],
+        product: [
+          "Провёл 35 глубинных CustDev-интервью с селлерами и руководителями клиентского сервиса крупных магазинов на Ozon и WB.",
+          "Упаковал оффер вокруг прямой экономии ФОТ: пилот полностью окупается у клиента в первый же месяц работы.",
+          "Собрал рабочий MVP за 5 дней и лично провёл первые 15 B2B-продаж через живую демонстрацию на реальных товарах клиента."
+        ],
+        tech: [
+          "Гибридный контур знаний: эмбеддинги BGE-M3, векторная БД Qdrant, реранкер и 35B LLM на собственном кластере vLLM.",
+          "Две петли автоматического самообучения по историческим диалогам операторов без ручного дообучения весов.",
+          "Автоматический CI eval-гейт качества ответов (контроль точности и отсутствия галлюцинаций по эталонному датасету)."
+        ],
+        pipe: ["API Маркетплейсов", "BGE-M3 Embedder", "Qdrant Hybrid RAG", "vLLM 35B Cluster", "CI Eval Gate"]
+      },
+      {
+        title: "FINTECH AI-КОПИЛОТ",
+        role: "Роль: Product Builder & Principal Data Architect · FinTech / E-commerce",
+        metrics: [
+          { val: "144 млн ₽", lbl: "Выявлено выпавших документов при миграции УТ→КА" },
+          { val: "1 ₽", lbl: "Точность автосверки витрин с бухоборотами" },
+          { val: "+14%", lbl: "Рост маржинальности юнита у заказчика" },
+          { val: "33 млн", lbl: "Строк проводок в потоковом ETL (50+ ГБ дампов)" }
+        ],
+        product: [
+          "Устранил главную боль собственников и CFO: ожидание финансовых сводок от аналитиков и бухгалтерии по 3–5 дней.",
+          "Создал интерфейс текстового и голосового AI-ассистента (NL→SQL): руководитель задаёт вопрос на русском языке и за 2 секунды получает график P&L и маржинальности SKU.",
+          "Внедрил автоматический мониторинг аномалий и кассовых разрывов с мгновенными уведомлениями в Telegram."
+        ],
+        tech: [
+          "Идемпотентный потоковый ETL-конвейер из корпоративной 1С (5 503 сущности, 3 078 маппингов полей, 775 автосверок) в ClickHouse.",
+          "NL→SQL агент поверх локального vLLM с жёсткими AST-guardrails на уровне SQL-парсера.",
+          "Инвариант нулевого дрейфа денег: CI-гейт сверяет аналитические витрины с бухгалтерским балансом до рубля."
+        ],
+        pipe: ["Дампы 1С 50+ ГБ", "Streaming ETL", "ClickHouse", "775 Автосверок", "vLLM NL→SQL Agent"]
+      },
+      {
+        title: "ПЛАТФОРМА ИИ-АГЕНТОВ MCP",
+        role: "Роль: Principal Systems & AI Architect · Enterprise SaaS",
+        metrics: [
+          { val: "421", lbl: "Промышленный MCP-инструмент в едином контуре" },
+          { val: "27", lbl: "Готовых коннекторов (1С, ЭДО, маркетплейсы, банки)" },
+          { val: "-58%", lbl: "Снижение операционных затрат на бэк-офис" },
+          { val: "76%", lbl: "Экономия токенов благодаря кодовому индексу" }
+        ],
+        product: [
+          "Спроектировал единую операционную платформу, где сотрудники и AI-агенты работают симметрично через одну систему прав и бизнес-правил.",
+          "Обеспечил безопасное внедрение ИИ в корпоративный контур за счёт zero-trust модели и подтверждения критических операций."
+        ],
+        tech: [
+          "Архитектура на Rust и TypeScript (26 бизнес-доменов): изоляция тенантов на уровне СУБД (PostgreSQL FORCE RLS) и графовая авторизация SpiceDB (Zanzibar ReBAC).",
+          "Событийная шина NATS JetStream с транзакционным outbox, аналитические зеркала в ClickHouse и собственный сервер видеосвязи WebRTC SFU на Rust.",
+          "Автогенерация MCP-схем напрямую из контрактов бэкенда с нулевым дублированием бизнес-логики."
+        ],
+        pipe: ["Domain API", "SpiceDB + PG RLS", "MCP (421 Tools)", "NATS JetStream", "27 B2B Коннекторов"]
+      },
+      {
+        title: "TRIPLEA: РОСТ 1.2M+ MAU",
+        role: "Роль: Head of Product / CPTO (Product & Tech Director) · 17 человек",
+        metrics: [
+          { val: "14% → 29%", lbl: "Рост когортного удержания Retention D30" },
+          { val: "+38%", lbl: "Увеличение среднего дохода на пользователя (ARPU)" },
+          { val: "2.8x", lbl: "Ускорение вывода продуктовых фич в продакшн" },
+          { val: "-35%", lbl: "Экономия ФОТ разработки за счёт AI-инструментов" }
+        ],
+        product: [
+          "Сформировал с нуля и возглавил кросс-функциональный департамент из 17 специалистов (продакты, аналитики, дизайнеры, Go/Vue/Angular/Flutter-инженеры, QA).",
+          "Полностью пересобрал CJM регистрации, онбординга, реферальную программу и платёжные сценарии (Apple StoreKit2, Google Play, международный эквайринг).",
+          "Внедрил в команду культуру быстрых продуктовых экспериментов и прототипирования через Cursor, Claude Code и v0."
+        ],
+        tech: [
+          "Спроектировал Highload-микросервисную архитектуру C1–C4 с запасом масштабирования до 10M MAU (Go, PostgreSQL, ClickHouse, Redis, gRPC/Protobuf, Kubernetes, Helm).",
+          "Лично написал 10 базовых бэкенд-сервисов и единые контракты данных между Web, Mobile и Backend."
+        ],
+        pipe: ["Редизайн CJM", "StoreKit2 / Play", "Go + ClickHouse", "K8s & Helm", "1.2M+ MAU"]
+      },
+      {
+        title: "VISION AI-АГЕНТ HORECA",
+        role: "Роль: AI Product Builder (0 → 1) · B2B Growth & Automation",
+        metrics: [
+          { val: "1.8% → 7.4%", lbl: "Рост конверсии из холодного лида в сделку (4.1x)" },
+          { val: "90 сек", lbl: "Время расчёта и генерации персонального КП" },
+          { val: "7", lbl: "Источников автоматического обогащения базы лидов" },
+          { val: "94%+", lbl: "Точность матчинга позиций меню на SKU поставщика" }
+        ],
+        product: [
+          "Устранил главное узкое место B2B-продаж поставщиков HoReCa: менеджеры тратили по 2–3 часа на ручной разбор меню ресторана и подбор аналогов из прайса.",
+          "Собрал автономный конвейер: сейлз отправляет ссылку или фото меню заведения и через полторы минуты получает готовое КП в PDF с расчётом выгоды."
+        ],
+        tech: [
+          "Распределённый скрейпинг-конвейер (7 картографических и отраслевых источников с ротацией прокси и обходом антибот-защиты).",
+          "Мультимодальный пайплайн LLM-Vision (распознавание фото меню, извлечение граммовок и семантический матчинг на номенклатуру поставщика).",
+          "Автоматический CI eval-гейт точности сопоставления (precision/recall по эталонной корзине) и отправка в CRM/Telegram."
+        ],
+        pipe: ["7-Source Scraper", "LLM-Vision Меню", "Vector SKU Match", "Расчёт маржи", "Генерация PDF КП"]
+      }
+    ];
+
+    function renderCase(index) {
+      const c = cases[index];
+      document.querySelectorAll('.case-switch-btn').forEach((btn, idx) => {
+        btn.classList.toggle('active', idx === index);
+      });
+      const mount = document.getElementById('dossier-mount');
+      mount.innerHTML = `
+        <h3 class="dossier-case-title">${c.title}</h3>
+        <p class="dossier-role-line">${c.role}</p>
+        <div class="dossier-metrics-band">
+          ${c.metrics.map(m => `
+            <div class="dossier-metric-cell">
+              <div class="dossier-metric-val">${m.val}</div>
+              <div class="dossier-metric-lbl">${m.lbl}</div>
+            </div>
+          `).join('')}
+        </div>
+        <div class="dossier-cols">
+          <div>
+            <div class="dossier-col-title">Продуктовые решения и монетизация</div>
+            <ul class="dossier-points">
+              ${c.product.map(p => `<li>${p}</li>`).join('')}
+            </ul>
+          </div>
+          <div>
+            <div class="dossier-col-title">Инженерная реализация и стек</div>
+            <ul class="dossier-points">
+              ${c.tech.map(t => `<li>${t}</li>`).join('')}
+            </ul>
+          </div>
+        </div>
+        <div class="dossier-pipeline-bar">
+          ${c.pipe.map((step, i) => `
+            <span class="pipe-step">${step}</span>
+            ${i < c.pipe.length - 1 ? '<span class="pipe-sep">→</span>' : ''}
+          `).join('')}
+        </div>
+      `;
+    }
+
+    function activateCase(index) {
+      renderCase(index);
+      const target = document.getElementById('inspector');
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+
+    (function initMotion() {
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      document.documentElement.classList.add('js-motion');
+      const items = Array.from(document.querySelectorAll('.reveal-item'));
+      items.forEach((el, idx) => {
+        const rect = el.getBoundingClientRect();
+        if (rect.top > window.innerHeight * 0.92) {
+          el.classList.add('pending');
+          el.style.transitionDelay = ((idx % 4) * 70) + 'ms';
+        }
+      });
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.remove('pending');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
+
+      items.forEach(el => {
+        if (el.classList.contains('pending')) observer.observe(el);
+      });
+    })();
+  </script>
+</body>
+</html>
